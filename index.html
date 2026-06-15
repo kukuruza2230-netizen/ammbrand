@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMM Studio | Коллекционные кабинетные артефакты</title>
+    <style>
+        :root { --bg: #0d0d0d; --txt: #ffffff; --muted: #8c8c8c; --gold: #c5a059; --border: #1a1a1a; --card: #121212; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--txt); font-family: -apple-system, sans-serif; -webkit-font-smoothing: antialiased; padding: 0 20px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 0 100px; }
+        header { text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 30px; margin-bottom: 50px; }
+        .b-title { font-size: 20px; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 12px; }
+        .b-sub { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); }
+        .lang-sw { margin-top: 25px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .lang-sw button { background: none; border: 1px solid var(--border); color: var(--muted); padding: 6px 16px; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; border-radius: 2px; transition: all 0.3s; }
+        .lang-sw button.active { border-color: var(--gold); color: var(--txt); background: var(--card); }
+        .about-section { background: var(--card); border: 1px solid var(--border); padding: 40px; margin-bottom: 60px; border-radius: 4px; }
+        .about-section h1 { font-size: 22px; font-weight: 300; margin-bottom: 20px; }
+        .about-section p { color: #b3b3b3; font-size: 14px; margin-bottom: 15px; font-weight: 300; line-height: 1.5; }
+        .gold-name, .gold-highlight { color: var(--gold); font-weight: 500; }
+        .sec-title { font-size: 20px; text-transform: uppercase; letter-spacing: 0.1em; margin: 50px 0 5px 0; color: var(--txt); border-left: 3px solid var(--gold); padding-left: 15px; }
+        .badge { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin: 5px 0 15px 18px; }
+        .sec-desc { font-size: 14px; color: #b0b0b0; margin-bottom: 20px; font-weight: 300; line-height: 1.5; }
+        .grid-img { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .grid-img img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #181818; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
+        .grid-img img:hover { border-color: var(--gold); transform: scale(1.01); }
+        .p-meta { display: flex; justify-content: space-between; align-items: center; background: #151515; padding: 15px 20px; border: 1px solid var(--border); margin-bottom: 40px; font-size: 14px; flex-wrap: wrap; gap: 10px; }
+        .p-price { color: var(--gold); font-weight: 600; font-size: 18px; letter-spacing: 0.02em; }
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,5,0.96); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .lightbox.active { opacity: 1; pointer-events: auto; }
+        .lightbox img { max-width: 85%; max-height: 85vh; border: 1px solid var(--border); transform: scale(0.95); transition: transform 0.3s; }
+        .lightbox.active img { transform: scale(1); }
+        footer { border-top: 1px solid var(--border); padding-top: 40px; margin-top: 80px; text-align: center; }
+        footer h2 { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 15px; }
+        .f-txt { font-size: 13px; color: var(--muted); max-width: 700px; margin: 0 auto; font-weight: 300; line-height: 1.5; }
+        .contacts a { color: var(--gold); text-decoration: none; }
+        .contacts a:hover { text-decoration: underline; }
+        [data-lang] { display: none; }
+        body.lang-ru [data-lang="ru"], body.lang-en [data-lang="en"], body.lang-zh [data-lang="zh"] { display: block; }
+        span[data-lang] { display: none; }
+        body.lang-ru span[data-lang="ru"], body.lang-en span[data-lang="en"], body.lang-zh span[data-lang="zh"] { display: inline; }
+    </style>
+</head>
+<body class="lang-ru">
+<div class="container">
+    <header>
+        <div class="b-title">AMM Studio &bull; Санкт-Петербург</div>
+        <div class="b-sub" data-lang="ru">Закрытый реестр кабинетных артефактов</div>
+        <div class="b-sub" data-lang="en">Private Registry of Executive Artifacts</div>
+        <div class="b-sub" data-lang="zh">桌面艺术品私有目录</div>
+        <div class="lang-sw">
+            <button id="btn-ru" class="active">RU</button>
+            <button id="btn-en">EN</button>
+            <button id="btn-zh">ZH</button>
+        </div>
+    </header>
+
+    <!-- МАНИФЕСТ (мультиязычный, работает) -->
+    <div class="about-section">
+        <div data-lang="ru">
+            <h1>Преемственность <span class="gold-highlight">Ленинградской школы ДПИ</span></h1>
+            <p>Приветствую. Меня зовут <span class="gold-name">Михаил Петрович Матвеев</span>, я руководитель творческой мастерской <strong>AMM Studio (Санкт-Петербург)</strong>. Мой стаж в реставрации и изготовлении художественной бронзы — <span class="gold-name">38 лет</span>.</p>
+            <p>Мы предлагаем авторские изделия, выполненные по строгим академическим канонам Ленинградской (Санкт-Петербургской) прикладной школы. В основе художественного проектирования лежит уникальный опыт и технологическая преемственность выдающихся мастеров советской реставрационной эпохи:</p>
+            <p style="padding-left:20px; border-left:2px solid var(--gold); margin-bottom:15px; color:#d1d1d1;">
+                <span class="gold-name">Петр Трофимович Матвеев</span> — знаменитый ленинградский реставратор. В период с 1988 по 1990 годы восстанавливал исторические светильники и предметы ДПИ ГМЗ «Павловск». Прошел профильную стажировку у французских мастеров легендарного ателье <span class="gold-highlight">«Entreprise Montagnier»</span> в конце 1980-х годов. Наставником его линии был легендарный мастер <span class="gold-name">Николай Павлович Клочков</span> — один из столпов старой ленинградской школы, чьи сложнейшие художественные изделия в имперском стиле признавались аутентичными на крупнейших мировых аукционах уровня <span class="gold-highlight">Sotheby’s</span>.<br><br>
+                Художественное проектирование и преемственность традиций мастерской подтверждены международным признанием работ <span class="gold-name">Николая Клочкова</span>, <span class="gold-name">Петра Матвеева</span> и <span class="gold-name">Валентины Солдатовой</span>.<br><br>
+                <span class="gold-name">Инна Сергеевна Павлова-Семенова</span> — архитектор, декоратор, художник театра, кандидат архитектуры, член Союза архитекторов России и призер первого международного архитектурно-дизайнерского конкурса <span class="gold-highlight">«Золотой Трезини» 2018</span>.
+            </p>
+            <p>Каждый объект выполнен руками мастеров высшего регистра, принимавших личное участие в реставрации и воссоздании памятников мирового значения: <span class="gold-highlight">Государственного Эрмитажа, Павловска, Екатерининского и Юсуповского дворцов</span>.</p>
+            <p>Мастерская выпускает строго лимитированные серии для премиум-сегмента B2B. Мы полностью исключили серийную поточность и компромиссы. Наша цель — создание кабинетных артефактов, обладающих подлинной исторической и коллекционной ценностью для первых лиц корпораций.</p>
+        </div>
+        <div data-lang="en">
+            <h1>Legacy of the <span class="gold-highlight">Leningrad School of Applied Arts</span></h1>
+            <p>Welcome. My name is <span class="gold-name">Mikhail Petrovich Matveev</span>, head of the creative workshop <strong>AMM Studio (St. Petersburg)</strong>. My experience in restoration and artistic bronze is <span class="gold-name">38 years</span>.</p>
+            <p>We offer original works made according to the strict academic canons of the Leningrad applied school. The foundation of our artistic design is the unique experience and technological continuity of outstanding masters of the Soviet restoration era:</p>
+            <p style="padding-left:20px; border-left:2px solid var(--gold); margin-bottom:15px; color:#d1d1d1;">
+                <span class="gold-name">Petr Trofimovich Matveev</span> — famous Leningrad restorer. In 1988–1990 he restored historical lighting and decorative art objects at the Pavlovsk State Museum. He completed a professional internship with French masters of the legendary atelier <span class="gold-highlight">"Entreprise Montagnier"</span> in the late 1980s. The mentor of his line was the legendary master <span class="gold-name">Nikolai Pavlovich Klochkov</span> — one of the pillars of the old Leningrad school, whose most complex artistic works in the Imperial style were recognized as authentic at the world's largest auctions, including <span class="gold-highlight">Sotheby’s</span>.<br><br>
+                The artistic design and continuity of the workshop's traditions are confirmed by the international recognition of the works of <span class="gold-name">Nikolai Klochkov</span>, <span class="gold-name">Petr Matveev</span> and <span class="gold-name">Valentina Soldatova</span>.<br><br>
+                <span class="gold-name">Inna Sergeevna Pavlova-Semenova</span> — architect, decorator, theater artist, PhD in Architecture, member of the Union of Architects of Russia, and prize-winner of the first international architectural and design competition <span class="gold-highlight">"Golden Trezzini" 2018</span>.
+            </p>
+            <p>Each object is crafted by top‑level masters who personally participated in the restoration and recreation of world‑famous monuments: <span class="gold-highlight">the State Hermitage, Pavlovsk, Catherine and Yusupov Palaces</span>.</p>
+            <p>The workshop produces strictly limited series for the premium B2B segment. We have completely eliminated mass production and compromises. Our goal is to create desktop artifacts of genuine historical and collectible value for corporate leaders.</p>
+        </div>
+        <div data-lang="zh">
+            <h1><span class="gold-highlight">列宁格勒应用艺术流派</span>的传承</h1>
+            <p>您好。我是 <span class="gold-name">Mikhail Petrovich Matveev</span>，创意工作室 <strong>AMM Studio（圣彼得堡）</strong>的负责人。我在修复和艺术青铜铸造方面的经验为 <span class="gold-name">38年</span>。</p>
+            <p>我们提供按照列宁格勒实用艺术学派的严格学术规范制作的原创作品。艺术设计的基础是苏联修复时代杰出大师的独特经验和技术传承：</p>
+            <p style="padding-left:20px; border-left:2px solid var(--gold); margin-bottom:15px; color:#d1d1d1;">
+                <span class="gold-name">Petr Trofimovich Matveev</span> — 著名的列宁格勒修复专家。在1988-1990年间，他修复了巴甫洛夫斯克国家博物馆的历史灯具和装饰艺术品。他在1980年代末完成了在传奇法国工作室 <span class="gold-highlight">"Entreprise Montagnier"</span> 的专业实习。他的导师是传奇大师 <span class="gold-name">Nikolai Pavlovich Klochkov</span> — 旧列宁格勒学派的支柱之一，其最复杂的帝国风格艺术作品在包括 <span class="gold-highlight">苏富比</span> 在内的世界顶级拍卖会上被认定为真品。<br><br>
+                工作室传统的艺术设计和传承得到了 <span class="gold-name">Nikolai Klochkov</span>、<span class="gold-name">Petr Matveev</span> 和 <span class="gold-name">Valentina Soldatova</span> 作品的国际认可。<br><br>
+                <span class="gold-name">Inna Sergeevna Pavlova-Semenova</span> — 建筑师、室内设计师、舞台艺术家、建筑学博士、俄罗斯建筑师联盟成员，并荣获第一届国际建筑与设计大赛 <span class="gold-highlight">“金特雷齐尼”2018</span> 奖项。
+            </p>
+            <p>每件作品均由曾亲自参与修复和重建世界著名古迹的顶级大师手工打造：<span class="gold-highlight">冬宫博物馆、巴甫洛夫斯克宫、叶卡捷琳娜宫和尤苏波夫宫</span>。</p>
+            <p>工作室为高端B2B领域生产严格限量系列。我们完全摒弃了流水线生产和妥协。我们的目标是为企业领导者创造具有真正历史和收藏价值的桌面艺术品。</p>
+        </div>
+    </div>
+
+    <!-- РАЗДЕЛ 1: ДИОРАМА (мультиязычный) -->
+    <div class="sec-title"><span data-lang="ru">1. Масштабная индустриальная диорама</span><span data-lang="en">1. Monumental Industrial Diorama</span><span data-lang="zh">1. 大型工业微缩景观</span></div>
+    <div class="badge"><span data-lang="ru">Промышленный титан</span><span data-lang="en">Industrial Titan</span><span data-lang="zh">工业巨擘</span></div>
+    <p class="sec-desc"><span data-lang="ru">Террасы карьеров декорируются натуральным камнем, вся спецтехника отливается из бронзы, далее проходит ручную обработку, патинирование колёс и гусениц с гальваническим золочением остальных деталей техники.</span><span data-lang="en">Quarry terraces are decorated with natural stone, all heavy machinery is cast in bronze, then hand-finished, with patination of wheels and tracks and galvanic gold plating of the remaining parts.</span><span data-lang="zh">采石场梯田采用天然石材装饰，所有重型机械均由青铜铸造，然后手工精加工，车轮和履带进行做旧处理，其余部件采用电镀金工艺。</span></p>
+    <div class="grid-img">
+        <img src="diorama1.jpg" alt="diorama1" onclick="openLightbox(this.src)">
+        <img src="diorama2.jpg" alt="diorama2" onclick="openLightbox(this.src)">
+        <img src="diorama3.jpg" alt="diorama3" onclick="openLightbox(this.src)">
+        <img src="diorama4.jpg" alt="diorama4" onclick="openLightbox(this.src)">
+    </div>
+    <div class="p-meta"><span><span data-lang="ru">Диорама «Промышленный Титан»</span><span data-lang="en">"Industrial Titan" Diorama</span><span data-lang="zh">“工业巨擘”微缩景观</span></span><span class="p-price">420 000 ₽</span></div>
+
+    <!-- РАЗДЕЛ 2: ХОЛДЕРЫ (мультиязычный) -->
+    <div class="sec-title"><span data-lang="ru">2. Архитектурные холдеры и подставки под книги</span><span data-lang="en">2. Architectural Book Holders & Folio Stands</span><span data-lang="zh">2. 建筑风格书籍艺术支架</span></div>
+    <div class="badge"><span data-lang="ru">Академический канон Ленинградской школы</span><span data-lang="en">Academic canon of the Leningrad school</span><span data-lang="zh">列宁格勒实用艺术流派的学术规范</span></div>
+    <p class="sec-desc"><span data-lang="ru">Массивные настольные держатели для фолиантов и документов. Элементы трубопроводов высокого давления, фланцы выполнены из латуни с ручной доводкой. Механизм часов — швейцарский кварцевый Ronda (точный ход, не требует завода).</span><span data-lang="en">Massive desktop holders for rare books and documents. High‑pressure pipeline elements, flanges are made of brass with hand finishing. Clock movement – Swiss quartz Ronda (accurate, no winding required).</span><span data-lang="zh">用于珍贵大部头书籍和文件的重型桌面支架。高压管道元件，法兰由黄铜制成，手工精加工。时钟机芯 – 瑞士石英 Ronda（走时精准，无需上弦）。</span></p>
+    <div class="grid-img">
+        <img src="holder1.jpg" alt="holder1" onclick="openLightbox(this.src)">
+        <img src="holder2.jpg" alt="holder2" onclick="openLightbox(this.src)">
+        <img src="holder3.jpg" alt="holder3" onclick="openLightbox(this.src)">
+        <img src="holder4.jpg" alt="holder4" onclick="openLightbox(this.src)">
+    </div>
+    <div class="p-meta"><span><span data-lang="ru">Держатель документов «Магистраль»</span><span data-lang="en">"Magistral" Document Holder</span><span data-lang="zh">“交通干线”文件架</span></span><span class="p-price">135 000 ₽</span></div>
+
+    <!-- РАЗДЕЛ 3: РАСШИРЕННЫЙ (мультиязычный) -->
+    <div class="sec-title"><span data-lang="ru">3. Настольные предметы ДПИ и кинетическая пластика</span><span data-lang="en">3. Fine Applied Art & Kinetic Sculptures</span><span data-lang="zh">3. 桌面高级实用艺术陈设与动态雕塑</span></div>
+    <div class="badge"><span data-lang="ru">Стимпанк-дирижабль, архитектурные миниатюры, исторические реплики</span><span data-lang="en">Steampunk airship, architectural miniatures, historical replicas</span><span data-lang="zh">蒸汽朋克飞艇、建筑微缩模型、历史复刻品</span></div>
+    <p class="sec-desc"><span data-lang="ru">Сложный полуподвижный объект — дирижабль в стиле «Стимпанк». Винты и шестерни на скрытых часовых подшипниках, вращаются от лёгкого касания. Арка-держатель — латунь и каррарский мрамор.<br><br>Архитектурные миниатюры: <strong>«Решётка дворцового моста»</strong>, <strong>«Балюстрада»</strong>, <strong>«Триумфальная арка»</strong> — бронза, позолота, основание из натурального камня или стабилизированного дерева.<br><br>Каминный канделябр, воссозданный по старым фотографиям для Юсуповского дворца в Санкт-Петербурге. Бронзовый маскарон на гранитном основании <strong>«Лев с кольцом»</strong> — символ Санкт-Петербурга (Ленинграда).</span><span data-lang="en">Sophisticated semi‑movable object – a Steampunk‑style airship. Propellers and gears on hidden clock bearings, rotating at a gentle touch. Arch‑holder – brass and Carrara marble.<br><br>Architectural miniatures: <strong>"Bridge Railing"</strong>, <strong>"Balustrade"</strong>, <strong>"Triumphal Arch"</strong> – bronze, gilding, base of natural stone or stabilized wood.<br><br>Fireplace candelabrum recreated from old photographs for the Yusupov Palace in St. Petersburg. Bronze maskaron on a granite base <strong>"Lion with Ring"</strong> – symbol of St. Petersburg (Leningrad).</span><span data-lang="zh">精密的半活动物体 – 蒸汽朋克风格的飞艇。螺旋桨和齿轮隐藏在钟表轴承上，轻轻一触即可旋转。拱形支架 – 黄铜和卡拉拉大理石。<br><br>建筑微缩模型：<strong>"宫殿桥栏杆"</strong>、<strong>"栏杆"</strong>、<strong>"凯旋门"</strong> – 青铜、镀金、天然石材或稳定化木材底座。<br><br>根据老照片为圣彼得堡尤苏波夫宫复制的壁炉烛台。花岗岩底座上的青铜面具 <strong>"带戒指的狮子"</strong> – 圣彼得堡（列宁格勒）的象征。</span></p>
+    <div class="grid-img">
+        <img src="tabletop_decorative_art1.jpg" alt="kinetic1" onclick="openLightbox(this.src)">
+        <img src="tabletop_decorative_art2.jpg" alt="kinetic2" onclick="openLightbox(this.src)">
+        <img src="tabletop_decorative_art3.jpg" alt="kinetic3" onclick="openLightbox(this.src)">
+        <img src="tabletop_decorative_art4.jpg" alt="kinetic4" onclick="openLightbox(this.src)">
+        <img src="tabletop_decorative_art5.jpg" alt="kinetic5" onclick="openLightbox(this.src)">
+        <img src="tabletop_decorative_art6.jpg" alt="kinetic6" onclick="openLightbox(this.src)">
+    </div>
+    <div class="p-meta"><span><span data-lang="ru">Коллекция «Имперский стиль»</span><span data-lang="en">"Imperial Style" Collection</span><span data-lang="zh">"帝国风格" 系列</span></span><span class="p-price">от 85 000 ₽ до 720 000 ₽</span></div>
+
+    <!-- РАЗДЕЛ 4: ХРОНОМЕТРЫ (мультиязычный) -->
+    <div class="sec-title"><span data-lang="ru">4. Монументальные кабинетные хронометры</span><span data-lang="en">4. Monumental Executive Timepieces</span><span data-lang="zh">4. 殿堂级大气的办公桌台钟</span></div>
+    <div class="badge"><span data-lang="ru">Мастерская часов</span><span data-lang="en">Master clockmaking</span><span data-lang="zh">大师级钟表制造</span></div>
+    <p class="sec-desc"><span data-lang="ru">Настольные часы высшего ранга. Врезка швейцарских часовых капсюлей Ronda. Бронзовое литьё, ручная чеканка, позолота, патина. Основания могут быть из натурального камня или стабилизированного дерева (кап, корень).</span><span data-lang="en">Top‑tier desk clocks. Integration of Swiss Ronda movements. Bronze casting, hand chasing, gilding, patina. Bases can be made of natural stone or stabilized wood (burl, root).</span><span data-lang="zh">最高级别的座钟。集成瑞士 Ronda 机芯。青铜铸造、手工雕琢、镀金、做旧。底座可采用天然石材或稳定化木材（树瘤、根料）。</span></p>
+    <div class="grid-img">
+        <img src="hour1.jpg" alt="hour1" onclick="openLightbox(this.src)">
+        <img src="hour2.jpg" alt="hour2" onclick="openLightbox(this.src)">
+        <img src="hour3.jpg" alt="hour3" onclick="openLightbox(this.src)">
+        <img src="hour4.jpg" alt="hour4" onclick="openLightbox(this.src)">
+        <img src="hour5.jpg" alt="hour5" onclick="openLightbox(this.src)">
+        <img src="hour6.jpg" alt="hour6" onclick="openLightbox(this.src)">
+    </div>
+    <div class="p-meta"><span><span data-lang="ru">Хронометр «Хранитель Времени»</span><span data-lang="en">"The Keeper of Time" Chronometer</span><span data-lang="zh">“时间守护者”台钟</span></span><span class="p-price">285 000 ₽</span></div>
+
+    <!-- РАЗДЕЛ 5: СВЕТИЛЬНИКИ (мультиязычный) -->
+    <div class="sec-title"><span data-lang="ru">5. Авторские интерьерные светильники</span><span data-lang="en">5. Bespoke Designer Lighting & Office Lamps</span><span data-lang="zh">5. 原创设计室内高级灯具</span></div>
+    <div class="badge"><span data-lang="ru">Газовые вышки ручной работы</span><span data-lang="en">Hand‑crafted gas derrick towers</span><span data-lang="zh">手工制作的天然气井架</span></div>
+    <p class="sec-desc"><span data-lang="ru">Функциональный кабинетный свет. Газовые вышки ручной работы с обвязкой трубопровода. Позолота или патинирование по желанию (позолота +30% к цене). Мягкий свет направлен строго вниз.</span><span data-lang="en">Functional office lighting. Hand‑crafted gas derrick towers with pipeline detailing. Gilding or patination on request (gilding +30% to price). Soft light directed strictly downward.</span><span data-lang="zh">功能性办公照明。手工制作的天然气井架，带有管道细节。可根据要求选择镀金或做旧处理（镀金加价30%）。柔和的光线严格向下照射。</span></p>
+    <div class="grid-img">
+        <img src="lamp1.jpg" alt="lamp1" onclick="openLightbox(this.src)">
+        <img src="lamp2.jpg" alt="lamp2" onclick="openLightbox(this.src)">
+        <img src="lamp3.jpg" alt="lamp3" onclick="openLightbox(this.src)">
+        <img src="lamp4.jpg" alt="lamp4" onclick="openLightbox(this.src)">
+        <img src="lamp5.jpg" alt="lamp5" onclick="openLightbox(this.src)">
+        <img src="lamp6.jpg" alt="lamp6" onclick="openLightbox(this.src)">
+    </div>
+    <div class="p-meta"><span><span data-lang="ru">Светильник «Поток Энергии»</span><span data-lang="en">"The Energy Stream" Desk Lamp</span><span data-lang="zh">“能量涌流”办公台灯</span></span><span class="p-price">380 000 ₽</span></div>
+
+    <!-- РАЗДЕЛ 6: ДОК-СТАНЦИИ -->
+    <div class="sec-title"><span data-lang="ru">6. Интерактивные док-станции «Монолит Силы»</span><span data-lang="en">6. Interactive Charging Docks "Monolith of Power"</span><span data-lang="zh">6. “力量基石”智能数码无线充电底座</span></div>
+    <div class="badge"><span data-lang="ru">Академический канон Ленинградской школы</span><span data-lang="en">Academic canon of the Leningrad school</span><span data-lang="zh">列宁格勒实用艺术流派的学术规范</span></div>
+    <p class="sec-desc"><span data-lang="ru">Троны для смартфонов. Qi-зарядка внутри цветного капа карельской березы в латунной раме с CNC-винтами и NFC-чипом для вызова VIP-услуг.</span><span data-lang="en">Smartphone thrones. Qi charging inside colored Karelian birch burl in brass CNC frame. Hidden NFC for VIP concierge.</span><span data-lang="zh">智能手机王座。Qi无线充电嵌入彩色卡累利阿桦木瘤，黄铜CNC框架，隐藏NFC芯片呼叫VIP服务。</span></p>
+    <div class="grid-img">
+        <img src="interactive_docking_stations1.jpg" alt="dock1" onclick="openLightbox(this.src)">
+        <img src="interactive_docking_stations2.jpg" alt="dock2" onclick="openLightbox(this.src)">
+        <img src="interactive_docking_stations3.jpg" alt="dock3" onclick="openLightbox(this.src)">
+        <img src="interactive_docking_stations4.jpg" alt="dock4" onclick="openLightbox(this.src)">
+    </div>
+    <div class="p-meta"><span><span data-lang="ru">Зарядный док «Монолит Силы» (NFC/Qi)</span><span data-lang="en">"Monolith of Power" Dock (NFC/Qi)</span><span data-lang="zh">“力量基石”智能充电座 (NFC/Qi)</span></span><span class="p-price">185 000 ₽</span></div>
+
+    <!-- РАЗДЕЛ 7 -->
+    <div class="sec-title"><span data-lang="ru">7. Индивидуальное производство по проектам заказчика</span><span data-lang="en">7. Custom Manufacturing to Client's Projects</span><span data-lang="zh">7. 按客户项目定制生产</span></div>
+    <div class="badge"><span data-lang="ru">Архитектурно-технологический аудит и экспертный надзор</span><span data-lang="en">Architectural & technological audit and expert supervision</span><span data-lang="zh">建筑技术审核与专家监督</span></div>
+    <p class="sec-desc"><span data-lang="ru">Творческая мастерская AMM Studio принимает в производство эксклюзивные кабинетные артефакты, элементы интерьера HoReCa и скульптурные композиции по чертежам, эскизам или готовым 3D-моделям архитекторов заказчика. Основываясь на 38-летнем реставрационном стаже руководителя мануфактуры Михаила Петровича Матвеева, мы обеспечиваем высшую технологическую цензуру и гарантируем безупречное воплощение идеи вашего архитектора в тяжелом металле и реликтовом камне.</span><span data-lang="en">AMM Studio accepts for production exclusive executive artifacts, HoReCa interior elements and sculptural compositions based on drawings, sketches or ready-made 3D models of the client's architects. Relying on the 38-year restoration experience of the head of the manufactory Mikhail Petrovich Matveev, we provide the highest technological expertise and guarantee impeccable implementation of your architect's idea in heavy metal and relic stone.</span><span data-lang="zh">AMM Studio 工作室接受根据客户建筑师的图纸、草图或现成 3D 模型生产独家桌面艺术品、HoReCa 室内元素和雕塑作品。凭借制造厂负责人 Mikhail Petrovich Matveev 38 年的修复经验，我们提供最高的技术审核，并保证将您的建筑师的想法完美地体现在重金属和 relic 石材中。</span></p>
+    <div class="p-meta" style="flex-direction:column; align-items:flex-start; gap:12px; margin-bottom:60px;">
+        <div style="font-size:14px; line-height:1.8; color:var(--muted);">
+            <span data-lang="ru"><strong>• Архитектурно-технологический аудит чертежей:</strong> от 35 000 ₽</span>
+            <span data-lang="en"><strong>• Architectural & technological audit of drawings:</strong> from 35 000 ₽</span>
+            <span data-lang="zh"><strong>• 图纸建筑技术审核：</strong> 35 000 ₽ 起</span><br>
+            <span data-lang="ru"><strong>• Ювелирная адаптация 3D-моделей под стандарты литья:</strong> от 50 000 ₽</span>
+            <span data-lang="en"><strong>• Jewelry adaptation of 3D models to casting standards:</strong> from 50 000 ₽</span>
+            <span data-lang="zh"><strong>• 3D模型珠宝级适配铸造标准：</strong> 50 000 ₽ 起</span><br>
+            <span data-lang="ru"><strong>• Производство и авторский надзор:</strong> по регламенту 50% предоплаты [FINANCE]</span>
+            <span data-lang="en"><strong>• Production and author supervision:</strong> according to the regulation 50% prepayment [FINANCE]</span>
+            <span data-lang="zh"><strong>• 生产和作者监督：</strong> 根据规定 50% 预付款 [FINANCE]</span>
+        </div>
+        <div style="margin-top:15px;">
+            <span data-lang="ru">Передать проект на аудит:</span>
+            <span data-lang="en">Submit a project for audit:</span>
+            <span data-lang="zh">提交项目审核：</span>
+            <a href="https://t.me/Michail7874" target="_blank" style="color:var(--gold); text-decoration:none;">📱 В мессенджер руководителя мастерской</a>
+        </div>
+    </div>
+
+    <!-- РЕГЛАМЕНТ -->
+    <div class="about-section" style="margin-top:60px;">
+        <div data-lang="ru">
+            <h2 class="gold-highlight">Регламент Мастерской AMM Studio</h2>
+            <p>Каждое изделие поставляется в глухом ультраматовом черном пенале из массива ясеня со скрытыми магнитными замками и нумерованным Паспортом коллекционной серии под личной подписью мастера.</p>
+            <p>Производственный цикл литья и ЧПУ-моделирования запускается строго по факту внесения 50% предоплаты. Квоты и сроки фиксируются в день заключения договора <strong>[FINANCE]</strong>.</p>
+        </div>
+        <div data-lang="en">
+            <h2 class="gold-highlight">AMM Studio Production Regulations</h2>
+            <p>Each artifact is delivered in a solid, ultra-matte black ash wood case with concealed magnetic locks and a numbered Certificate of Authenticity signed by the master artisan.</p>
+            <p>The production cycle for casting and CNC milling begins exclusively upon receipt of a 50% advance payment. Allocation quotas and timelines are legally fixed on the contract date <strong>[FINANCE]</strong>.</p>
+        </div>
+        <div data-lang="zh">
+            <h2 class="gold-highlight">AMM 工作室定制章程</h2>
+            <p>每件作品均配有哑光黑色白蜡木实木礼盒，隐藏式磁扣，大师亲签限量收藏证书。</p>
+            <p>铸造与CNC精雕的生产周期严格在收到 50% 预付款后启动。生产配额与交货工期在签署合同之日正式锁定 <strong>[FINANCE]</strong>.</p>
+        </div>
+    </div>
+
+    <footer>
+        <h2>AMM STUDIO</h2>
+        <div class="f-txt"><span data-lang="ru">Санкт-Петербург, Россия | Только по предварительной записи для коллекционеров и институциональных клиентов</span><span data-lang="en">St. Petersburg, Russia | By appointment only for collectors and institutional clients</span><span data-lang="zh">俄罗斯圣彼得堡 | 仅限收藏家及机构客户预约</span></div>
+        <div class="contacts" style="margin-top:20px; font-size:13px; color:var(--gold);">
+            <p>📱 Telegram: <a href="https://t.me/Michail7874" target="_blank">@Michail7874</a></p>
+            <p>📧 Email: <a href="mailto:Fenixart@yandex.ru">Fenixart@yandex.ru</a></p>
+            <p>📞 Телефон / WhatsApp: <a href="tel:+79531479931">+7 (953) 147-99-31</a></p>
+        </div>
+    </footer>
+</div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="">
+</div>
+<script>
+    function setLang(l) {
+        document.body.className = 'lang-' + l;
+        localStorage.setItem('amm_lang', l);
+        document.querySelectorAll('.lang-sw button').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + l).classList.add('active');
+    }
+    function openLightbox(src) {
+        document.getElementById('lightbox-img').src = src;
+        document.getElementById('lightbox').classList.add('active');
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+        document.getElementById('lightbox-img').src = '';
+    }
+    var savedLang = localStorage.getItem('amm_lang');
+    if (savedLang && (savedLang === 'ru' || savedLang === 'en' || savedLang === 'zh')) setLang(savedLang);
+    else setLang('ru');
+    document.getElementById('btn-ru').onclick = function() { setLang('ru'); };
+    document.getElementById('btn-en').onclick = function() { setLang('en'); };
+    document.getElementById('btn-zh').onclick = function() { setLang('zh'); };
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
